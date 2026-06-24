@@ -1,8 +1,10 @@
 # DormLink: Smart Boarding House System
 
 **Landlord/Admin Login Credentials**
-**Username: admin
-**Password: dormlink2024
+
+Username: admin
+
+Password: dormlink2024
 
 
 
