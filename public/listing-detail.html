@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="View full boarding house details on DormLink." />
+  <title>Listing Details — DormLink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-primary: #3B82F6;
+      --color-primary-dark: #2563EB;
+      --color-primary-light: #DBEAFE;
+      --color-accent: #60A5FA;
+      --color-bg: #F8FAFF;
+      --color-surface: #FFFFFF;
+      --color-surface-alt: #EFF6FF;
+      --color-border: #BFDBFE;
+      --color-text: #1E293B;
+      --color-text-muted: #64748B;
+      --color-success: #22C55E;
+      --color-danger: #EF4444;
+      --color-warning: #F59E0B;
+      --color-nav-bg: rgba(255, 255, 255, 0.92);
+      --color-card-shadow: 0 4px 24px rgba(59, 130, 246, 0.10);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --nav-height: 72px;
+    }
+
+    [data-theme="dark"] {
+      --color-primary: #60A5FA;
+      --color-primary-dark: #3B82F6;
+      --color-primary-light: #1E3A5F;
+      --color-accent: #93C5FD;
+      --color-bg: #0F172A;
+      --color-surface: #1E293B;
+      --color-surface-alt: #162032;
+      --color-border: #2D4A6E;
+      --color-text: #F1F5F9;
+      --color-text-muted: #94A3B8;
+      --color-nav-bg: rgba(15, 23, 42, 0.95);
+      --color-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* Navbar */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: var(--color-nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 2px 16px rgba(59, 130, 246, 0.06);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--nav-height);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: var(--color-text);
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .nav-logo span {
+      color: var(--color-primary);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      transition: all var(--transition);
+    }
+
+    .btn-nav:hover {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    .btn-nav svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--color-surface-alt);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+
+    #theme-toggle:hover {
+      color: var(--color-primary);
+    }
+
+    #theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .icon-sun {
+      display: none;
+    }
+
+    .icon-moon {
+      display: block;
+    }
+
+    [data-theme="dark"] .icon-sun {
+      display: block;
+    }
+
+    [data-theme="dark"] .icon-moon {
+      display: none;
+    }
+
+    /* Page */
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: calc(var(--nav-height) + 32px) 24px 60px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      margin-bottom: 28px;
+    }
+
+    .breadcrumb a {
+      color: var(--color-primary);
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .breadcrumb svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    /* Loader / Error */
+    #state-overlay {
+      padding: 80px;
+      text-align: center;
+    }
+
+    .loader-spinner {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 16px;
+      border: 3px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .state-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .state-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 8px;
+    }
+
+    .state-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Detail Layout */
+    #detail-content {
+      display: none;
+    }
+
+    /* Image */
+    .detail-img {
+      width: 100%;
+      height: 400px;
+      background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .detail-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      opacity: 0.4;
+    }
+
+    /* Availability Badge (on image) */
+    .detail-status {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      font-size: 0.875rem;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+
+    .status-available {
+      background: rgba(34, 197, 94, 0.9);
+      color: #fff;
+    }
+
+    .status-full {
+      background: rgba(239, 68, 68, 0.9);
+      color: #fff;
+    }
+
+    /* Header */
+    .detail-header {
+      margin-bottom: 32px;
+    }
+
+    .detail-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--color-text);
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .detail-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .detail-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+    }
+
+    .detail-meta-item svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .detail-room-badge {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    /* Price Banner */
+    .price-banner {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.25);
+    }
+
+    .price-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .price-amount {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .price-amount span {
+      font-size: 0.875rem;
+      font-weight: 400;
+      opacity: 0.75;
+    }
+
+    .price-extras {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .price-extra .price-label {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .price-extra-val {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* Sections */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .detail-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--color-card-shadow);
+    }
+
+    .detail-section.full {
+      grid-column: 1 / -1;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .section-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary-light);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+
+    .section-name {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    /* Info Rows */
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--color-border);
+      gap: 16px;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .info-key {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+    }
+
+    .info-val {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--color-text);
+      text-align: right;
+    }
+
+    /* Tags Grid (amenities, rules) */
+    .tags-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: 1.5px solid transparent;
+    }
+
+    .tag-yes {
+      background: #F0FDF4;
+      color: #15803D;
+      border-color: #BBF7D0;
+    }
+
+    .tag-no {
+      background: var(--color-surface-alt);
+      color: var(--color-text-muted);
+      border-color: var(--color-border);
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    [data-theme="dark"] .tag-yes {
+      background: #052e16;
+      color: #86efac;
+      border-color: #166534;
+    }
+
+    /* Utilities included */
+    .util-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .util-row:last-child {
+      border-bottom: none;
+    }
+
+    .util-name {
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    .util-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .util-yes {
+      background: #DCFCE7;
+      color: #16A34A;
+    }
+
+    .util-no {
+      background: var(--color-surface-alt);
+      color: var(--color-text-muted);
+    }
+
+    [data-theme="dark"] .util-yes {
+      background: #052e16;
+      color: #86efac;
+    }
+
+    /* Description */
+    .detail-desc {
+      font-size: 0.9375rem;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    /* Contact Card */
+    .contact-card {
+      background: linear-gradient(135deg, var(--color-surface-alt), var(--color-surface));
+      border: 1.5px solid var(--color-primary);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .contact-owner-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .contact-owner-name {
+      font-family: var(--font-heading);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .contact-phone-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-primary);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      transition: all var(--transition);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.30);
+    }
+
+    .contact-phone-btn:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .contact-phone-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* Updated date */
+    .detail-updated {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      text-align: right;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 720px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-section.full {
+        grid-column: 1;
+      }
+
+      .detail-img {
+        height: 240px;
+      }
+
+      .price-banner {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a href="listings.html" class="btn-nav" id="nav-back" style="padding-left: 0; padding-right: 0;">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </a>
+        <a href="index.html" class="nav-logo" id="nav-logo">
+          <div class="nav-logo-icon"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+          Dorm<span>Link</span>
+        </a>
+      </div>
+      <div class="nav-right">
+        <button id="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <svg viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+      <a href="listings.html">Listings</a>
+      <svg viewBox="0 0 24 24">
+        <polyline points="9 18 15 12 9 6" />
+      </svg>
+      <span id="breadcrumb-name">Details</span>
+    </nav>
+
+    <!-- State Overlay (Loader / Error) -->
+    <div id="state-overlay">
+      <div class="loader-spinner"></div>
+      <p class="state-desc" style="margin-top:8px;">Loading listing details...</p>
+    </div>
+
+    <!-- Detail Content (hidden until loaded) -->
+    <div id="detail-content">
+
+      <!-- Image -->
+      <div class="detail-img" id="detail-img-wrap">
+        <div class="detail-img-placeholder">🏠</div>
+      </div>
+
+      <!-- Header -->
+      <div class="detail-header">
+        <h1 class="detail-title" id="detail-title"></h1>
+        <div class="detail-meta">
+          <div class="detail-meta-item" id="detail-address-meta">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span id="detail-address"></span>
+          </div>
+          <span class="detail-room-badge" id="detail-room-type"></span>
+        </div>
+      </div>
+
+      <!-- Price Banner -->
+      <div class="price-banner">
+        <div class="price-main">
+          <div class="price-label">Monthly Rent</div>
+          <div class="price-amount" id="detail-rent">₱0 <span>/month</span></div>
+        </div>
+        <div class="price-extras">
+          <div class="price-extra">
+            <div class="price-label">Security Deposit</div>
+            <div class="price-extra-val" id="detail-deposit">—</div>
+          </div>
+          <div class="price-extra">
+            <div class="price-label">Advance Payment</div>
+            <div class="price-extra-val" id="detail-advance">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sections Grid -->
+      <div class="detail-grid">
+
+        <!-- Description -->
+        <div class="detail-section full" id="section-desc-wrap" style="display:none">
+          <div class="section-head">
+            <div class="section-icon">📝</div>
+            <div class="section-name">Description</div>
+          </div>
+          <p class="detail-desc" id="detail-desc"></p>
+        </div>
+
+        <!-- Room Information -->
+        <div class="detail-section">
+          <div class="section-head">
+            <div class="section-icon">🛏️</div>
+            <div class="section-name">Room Information</div>
+          </div>
+          <div class="info-row"><span class="info-key">Room Type</span><span class="info-val" id="r-type"></span></div>
+          <div class="info-row"><span class="info-key">Max Occupants</span><span class="info-val"
+              id="r-occupants"></span></div>
+          <div class="info-row"><span class="info-key">Room Size</span><span class="info-val" id="r-size"></span></div>
+          <div class="info-row"><span class="info-key">Available Rooms</span><span class="info-val" id="r-rooms"></span>
+          </div>
+          <div class="info-row" id="r-beds-row"><span class="info-key">Available Beds</span><span class="info-val"
+              id="r-beds"></span></div>
+        </div>
+
+        <!-- Utilities -->
+        <div class="detail-section">
+          <div class="section-head">
+            <div class="section-icon">⚡</div>
+            <div class="section-name">Utilities Included</div>
+          </div>
+          <div class="util-row"><span class="util-name">💧 Water</span><span class="util-badge" id="u-water"></span>
+          </div>
+          <div class="util-row"><span class="util-name">⚡ Electricity</span><span class="util-badge" id="u-elec"></span>
+          </div>
+          <div class="util-row"><span class="util-name">📶 WiFi</span><span class="util-badge" id="u-wifi"></span></div>
+          <div id="u-fees-row" class="info-row" style="display:none;margin-top:12px;">
+            <span class="info-key">Additional Fees</span>
+            <span class="info-val" id="u-fees" style="text-align:left;"></span>
+          </div>
+        </div>
+
+        <!-- Amenities -->
+        <div class="detail-section full">
+          <div class="section-head">
+            <div class="section-icon">✨</div>
+            <div class="section-name">Amenities</div>
+          </div>
+          <div class="tags-grid" id="amenities-grid"></div>
+        </div>
+
+        <!-- House Rules -->
+        <div class="detail-section full">
+          <div class="section-head">
+            <div class="section-icon">📋</div>
+            <div class="section-name">House Rules</div>
+          </div>
+          <div class="tags-grid" id="rules-grid"></div>
+        </div>
+
+        <!-- Availability -->
+        <div class="detail-section">
+          <div class="section-head">
+            <div class="section-icon">📅</div>
+            <div class="section-name">Availability</div>
+          </div>
+          <div class="info-row"><span class="info-key">Status</span><span class="info-val" id="av-status"></span></div>
+          <div class="info-row" id="av-date-row"><span class="info-key">Date Available</span><span class="info-val"
+              id="av-date"></span></div>
+        </div>
+
+        <!-- Owner -->
+        <div class="detail-section">
+          <div class="section-head">
+            <div class="section-icon">👤</div>
+            <div class="section-name">Owner</div>
+          </div>
+          <div class="info-row"><span class="info-key">Name</span><span class="info-val" id="own-name"></span></div>
+          <div class="info-row"><span class="info-key">Contact</span><span class="info-val" id="own-contact"></span>
+          </div>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="detail-section full">
+          <div class="contact-card">
+            <div class="contact-owner">
+              <div class="contact-owner-label">Listed by</div>
+              <div class="contact-owner-name" id="contact-owner-name"></div>
+            </div>
+            <a id="contact-phone-link" href="#" class="contact-phone-btn">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.4a16 16 0 0 0 6.29 6.29l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <span id="contact-phone-text">Call Landlord</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="detail-updated" id="detail-updated"></p>
+
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const t = localStorage.getItem('dormlink-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('dormlink-theme', next);
+    });
+
+    function esc(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function money(val) {
+      return val != null && val !== '' ? '₱' + Number(val).toLocaleString() : '—';
+    }
+    function utilBadge(val) {
+      return val ? '<span class="util-badge util-yes">Included</span>' : '<span class="util-badge util-no">Not Included</span>';
+    }
+    function boolTag(label, val) {
+      const cls = val ? 'tag-yes' : 'tag-no';
+      const icon = val ? '✓' : '✗';
+      return `<span class="tag ${cls}">${icon} ${esc(label)}</span>`;
+    }
+
+    async function loadListing() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      const overlay = document.getElementById('state-overlay');
+      const content = document.getElementById('detail-content');
+
+      if (!id || isNaN(id)) {
+        overlay.innerHTML = `<div class="state-icon">⚠️</div><div class="state-title">Invalid Listing</div><p class="state-desc">No listing ID was provided. <a href="listings.html" style="color:var(--color-primary)">Back to listings</a></p>`;
+        return;
+      }
+
+      try {
+        const resp = await fetch(`/api/listings/${id}`);
+        const data = await resp.json();
+
+        if (!data.success) {
+          overlay.innerHTML = `<div class="state-icon">😕</div><div class="state-title">Listing Not Found</div><p class="state-desc">This listing may have been removed. <a href="listings.html" style="color:var(--color-primary)">Back to listings</a></p>`;
+          return;
+        }
+
+        const L = data.data;
+
+        // Hide overlay, show content
+        overlay.style.display = 'none';
+        content.style.display = 'block';
+
+        // Update page title & breadcrumb
+        document.title = `${L.name} — DormLink`;
+        document.getElementById('breadcrumb-name').textContent = L.name;
+
+        // Image
+        const imgWrap = document.getElementById('detail-img-wrap');
+        const isAvail = L.availability_status === 'Available';
+        imgWrap.innerHTML = L.image_filename
+          ? `<img src="/uploads/${esc(L.image_filename)}" alt="${esc(L.name)}" />`
+          : `<div class="detail-img-placeholder">🏠</div>`;
+        imgWrap.insertAdjacentHTML('beforeend',
+          `<span class="detail-status ${isAvail ? 'status-available' : 'status-full'}">${isAvail ? '● Available' : '● Full'}</span>`
+        );
+
+        // Header
+        document.getElementById('detail-title').textContent = L.name;
+        document.getElementById('detail-address').textContent = L.address;
+        document.getElementById('detail-room-type').textContent = L.room_type;
+
+        // Price
+        document.getElementById('detail-rent').innerHTML = `₱${Number(L.monthly_rent).toLocaleString()} <span>/month</span>`;
+        document.getElementById('detail-deposit').textContent = money(L.security_deposit);
+        document.getElementById('detail-advance').textContent = money(L.advance_payment);
+
+        // Description
+        if (L.description) {
+          document.getElementById('section-desc-wrap').style.display = '';
+          document.getElementById('detail-desc').textContent = L.description;
+        }
+
+        // Room info
+        document.getElementById('r-type').textContent = L.room_type;
+        document.getElementById('r-occupants').textContent = L.occupants_allowed != null ? L.occupants_allowed + ' person(s)' : '—';
+        document.getElementById('r-size').textContent = L.room_size || '—';
+        document.getElementById('r-rooms').textContent = L.available_rooms != null ? L.available_rooms : '—';
+        if (L.room_type === 'Bedspace' && L.available_beds != null) {
+          document.getElementById('r-beds').textContent = L.available_beds;
+        } else {
+          document.getElementById('r-beds-row').style.display = 'none';
+        }
+
+        // Utilities
+        document.getElementById('u-water').outerHTML = utilBadge(L.water_included);
+        document.getElementById('u-elec').outerHTML = utilBadge(L.electricity_included);
+        document.getElementById('u-wifi').outerHTML = utilBadge(L.wifi_included);
+        // Re-fetch after outerHTML replace
+        document.querySelectorAll('.util-badge')[0].outerHTML = utilBadge(L.water_included);
+        ['u-water', 'u-elec', 'u-wifi'].forEach((id, i) => {
+          const vals = [L.water_included, L.electricity_included, L.wifi_included];
+          const el = document.querySelectorAll('.util-badge')[i];
+          if (el) { el.className = 'util-badge ' + (vals[i] ? 'util-yes' : 'util-no'); el.textContent = vals[i] ? 'Included' : 'Not Included'; }
+        });
+        if (L.additional_fees) {
+          document.getElementById('u-fees-row').style.display = '';
+          document.getElementById('u-fees').textContent = L.additional_fees;
+        }
+
+        // Amenities
+        const amenityMap = [
+          ['amenity_wifi', '📶 WiFi'], ['amenity_aircon', '❄️ Aircon'], ['amenity_electric_fan', '🌀 Electric Fan'],
+          ['amenity_private_cr', '🚿 Private CR'], ['amenity_shared_cr', '🚽 Shared CR'], ['amenity_kitchen', '🍳 Kitchen Access'],
+          ['amenity_laundry', '👔 Laundry Area'], ['amenity_parking', '🚗 Parking'], ['amenity_study_area', '📚 Study Area'],
+          ['amenity_cctv', '📷 CCTV'], ['amenity_security_guard', '💂 Security Guard'], ['amenity_water_supply', '💧 Water Supply'],
+        ];
+        document.getElementById('amenities-grid').innerHTML = amenityMap.map(([k, label]) => boolTag(label, L[k])).join('');
+
+        // House Rules
+        const rulesMap = [
+          ['rule_curfew', 'Curfew'], ['rule_visitors_allowed', 'Visitors Allowed'],
+          ['rule_cooking_allowed', 'Cooking Allowed'], ['rule_drinking_allowed', 'Drinking Allowed'],
+          ['rule_smoking_allowed', 'Smoking Allowed'], ['rule_pets_allowed', 'Pets Allowed'],
+          ['rule_male_only', 'Male Only'], ['rule_female_only', 'Female Only'],
+          ['rule_students_only', 'Students Only'], ['rule_working_professionals_only', 'Working Professionals Only'],
+        ];
+        document.getElementById('rules-grid').innerHTML = rulesMap.map(([k, label]) => boolTag(label, L[k])).join('');
+
+        // Availability
+        document.getElementById('av-status').innerHTML =
+          `<span style="color:${isAvail ? 'var(--color-success)' : 'var(--color-danger)'};font-weight:700;">${L.availability_status}</span>`;
+        if (L.date_available) {
+          document.getElementById('av-date').textContent = new Date(L.date_available).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
+        } else {
+          document.getElementById('av-date-row').style.display = 'none';
+        }
+
+        // Owner
+        document.getElementById('own-name').textContent = L.owner_name || '—';
+        document.getElementById('own-contact').textContent = L.contact_number || '—';
+        document.getElementById('contact-owner-name').textContent = L.owner_name || 'Landlord';
+        const phoneLink = document.getElementById('contact-phone-link');
+        if (L.contact_number) {
+          phoneLink.href = `tel:${L.contact_number.replace(/\s/g, '')}`;
+          document.getElementById('contact-phone-text').textContent = L.contact_number;
+        } else {
+          phoneLink.style.display = 'none';
+        }
+
+        // Last updated
+        if (L.last_updated) {
+          document.getElementById('detail-updated').textContent =
+            'Last updated: ' + new Date(L.last_updated).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+      } catch (err) {
+        overlay.innerHTML = `<div class="state-icon">⚠️</div><div class="state-title">Failed to Load</div><p class="state-desc">Network error. <a href="listings.html" style="color:var(--color-primary)">Back to listings</a></p>`;
+      }
+    }
+
+    // Fix utility badges rendered before outerHTML swap
+    function setUtil(selector, val) {
+      const el = document.querySelector(selector);
+      if (!el) return;
+      el.className = 'util-badge ' + (val ? 'util-yes' : 'util-no');
+      el.textContent = val ? 'Included' : 'Not Included';
+    }
+
+    loadListing();
+  </script>
+</body>
+
+</html>

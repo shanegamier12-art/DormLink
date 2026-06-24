@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Edit your boarding house listing on DormLink." />
+  <title>Edit Listing — DormLink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-primary:#3B82F6;--color-primary-dark:#2563EB;--color-primary-light:#DBEAFE;
+      --color-bg:#F8FAFF;--color-surface:#FFFFFF;--color-surface-alt:#EFF6FF;
+      --color-border:#BFDBFE;--color-text:#1E293B;--color-text-muted:#64748B;
+      --color-danger:#EF4444;--color-danger-light:#FEF2F2;--color-danger-border:#FECACA;
+      --color-success:#22C55E;
+      --color-nav-bg:rgba(255,255,255,0.92);
+      --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-full:9999px;
+      --transition:0.3s cubic-bezier(0.4,0,0.2,1);
+      --font-heading:'Poppins',sans-serif;--font-body:'Inter',sans-serif;
+      --nav-height:72px;
+    }
+    [data-theme="dark"] {
+      --color-primary:#60A5FA;--color-primary-dark:#3B82F6;--color-primary-light:#1E3A5F;
+      --color-bg:#0F172A;--color-surface:#1E293B;--color-surface-alt:#162032;
+      --color-border:#2D4A6E;--color-text:#F1F5F9;--color-text-muted:#94A3B8;
+      --color-danger:#FCA5A5;--color-danger-light:#2d1515;--color-danger-border:#7f1d1d;
+      --color-nav-bg:rgba(15,23,42,0.95);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-body);background:var(--color-bg);color:var(--color-text);min-height:100vh;transition:background var(--transition),color var(--transition);}
+    a{text-decoration:none;color:inherit;}
+
+    /* Navbar */
+    #navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-height);background:var(--color-nav-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--color-border);box-shadow:0 2px 16px rgba(59,130,246,0.06);}
+    .nav-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:var(--nav-height);}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-heading);font-size:1.375rem;font-weight:800;color:var(--color-text);}
+    .nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--color-primary),var(--color-primary-dark));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;}
+    .nav-logo-icon svg{width:20px;height:20px;fill:#fff;}
+    .nav-logo span{color:var(--color-primary);}
+    .nav-right{display:flex;align-items:center;gap:8px;}
+    .btn-nav{display:flex;align-items:center;gap:6px;font-size:0.875rem;font-weight:500;color:var(--color-text-muted);padding:8px 14px;border-radius:var(--radius-full);transition:all var(--transition);background:none;border:none;cursor:pointer;font-family:var(--font-body);}
+    .btn-nav:hover{background:var(--color-primary-light);color:var(--color-primary);}
+    .btn-nav svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+    #theme-toggle{width:40px;height:40px;border-radius:var(--radius-full);border:none;background:var(--color-surface-alt);color:var(--color-text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--transition);}
+    #theme-toggle:hover{color:var(--color-primary);}
+    #theme-toggle svg{width:18px;height:18px;}
+    .icon-sun{display:none;}.icon-moon{display:block;}
+    [data-theme="dark"] .icon-sun{display:block;}[data-theme="dark"] .icon-moon{display:none;}
+
+    /* Page */
+    .page{max-width:860px;margin:0 auto;padding:calc(var(--nav-height) + 32px) 24px 60px;}
+
+    /* Page Header */
+    .page-hd{margin-bottom:32px;}
+    .page-hd-label{font-size:0.75rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-primary);margin-bottom:6px;}
+    .page-hd-title{font-family:var(--font-heading);font-size:clamp(1.375rem,3vw,1.875rem);font-weight:800;color:var(--color-text);margin-bottom:4px;}
+    .page-hd-sub{font-size:0.9rem;color:var(--color-text-muted);}
+
+    /* Loader */
+    #page-loader{padding:80px;text-align:center;}
+    .spinner{width:44px;height:44px;margin:0 auto 16px;border:3px solid var(--color-border);border-top-color:var(--color-primary);border-radius:50%;animation:spin 0.75s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .loader-text{color:var(--color-text-muted);font-size:0.9rem;}
+
+    /* Form Content */
+    #form-content{display:none;}
+
+    /* Section Card */
+    .form-section{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;box-shadow:0 2px 12px rgba(59,130,246,0.06);}
+    .section-head{display:flex;align-items:center;gap:10px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--color-border);}
+    .section-icon{width:36px;height:36px;background:var(--color-primary-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.125rem;flex-shrink:0;}
+    .section-name{font-family:var(--font-heading);font-size:1rem;font-weight:700;color:var(--color-text);}
+
+    /* Form Grid */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .form-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+    .col-full{grid-column:1/-1;}
+
+    /* Form Field */
+    .form-group{display:flex;flex-direction:column;gap:6px;}
+    .form-label{font-size:0.8125rem;font-weight:600;color:var(--color-text);}
+    .form-label .req{color:var(--color-danger);}
+    .form-input,.form-select,.form-textarea{
+      width:100%;padding:11px 14px;
+      background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);
+      font-family:var(--font-body);font-size:0.9rem;color:var(--color-text);
+      outline:none;transition:border-color var(--transition),box-shadow var(--transition),background var(--transition);
+    }
+    .form-input::placeholder,.form-textarea::placeholder{color:var(--color-text-muted);}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{
+      border-color:var(--color-primary);
+      box-shadow:0 0 0 3px rgba(59,130,246,0.12);
+      background:var(--color-surface);
+    }
+    .form-textarea{resize:vertical;min-height:100px;line-height:1.6;}
+    .input-prefix-wrap{position:relative;}
+    .input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--color-text-muted);font-size:0.9rem;pointer-events:none;}
+    .form-input.with-prefix{padding-left:26px;}
+
+    /* Checkbox Group */
+    .checkbox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+    .checkbox-item{display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);transition:all var(--transition);user-select:none;}
+    .checkbox-item:hover{border-color:var(--color-primary);background:var(--color-primary-light);}
+    .checkbox-item input[type="checkbox"]{width:16px;height:16px;accent-color:var(--color-primary);flex-shrink:0;}
+    .checkbox-item.checked{border-color:var(--color-primary);background:var(--color-primary-light);}
+    .checkbox-label{font-size:0.8125rem;font-weight:500;color:var(--color-text-muted);}
+    .checkbox-item.checked .checkbox-label{color:var(--color-primary);font-weight:600;}
+
+    /* Image Upload */
+    .img-upload-area{
+      border:2px dashed var(--color-border);border-radius:var(--radius-lg);
+      padding:40px 24px;text-align:center;cursor:pointer;
+      transition:all var(--transition);background:var(--color-bg);
+    }
+    .img-upload-area:hover,.img-upload-area.drag{border-color:var(--color-primary);background:var(--color-primary-light);}
+    .img-upload-icon{font-size:2.5rem;margin-bottom:12px;}
+    .img-upload-text{font-size:0.9375rem;font-weight:600;color:var(--color-text);margin-bottom:4px;}
+    .img-upload-hint{font-size:0.8rem;color:var(--color-text-muted);}
+    .img-preview{display:none;margin-top:16px;border-radius:var(--radius-md);overflow:hidden;max-height:200px;position:relative;}
+    .img-preview img{width:100%;max-height:200px;object-fit:cover;}
+    #image-input{display:none;}
+    .current-img-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.6);color:#fff;font-size:0.75rem;padding:4px 10px;border-radius:var(--radius-full);backdrop-filter:blur(4px);}
+
+    /* Form Actions */
+    .form-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:8px;}
+    .btn-cancel{padding:13px 24px;border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:transparent;font-family:var(--font-body);font-size:0.9375rem;font-weight:600;color:var(--color-text-muted);cursor:pointer;transition:all var(--transition);}
+    .btn-cancel:hover{background:var(--color-surface-alt);color:var(--color-text);}
+    .btn-submit{padding:13px 32px;border-radius:var(--radius-full);border:none;background:var(--color-primary);color:#fff;font-family:var(--font-body);font-size:0.9375rem;font-weight:700;cursor:pointer;transition:all var(--transition);box-shadow:0 4px 16px rgba(59,130,246,0.28);display:flex;align-items:center;gap:8px;}
+    .btn-submit:hover{background:var(--color-primary-dark);transform:translateY(-1px);}
+    .btn-submit:disabled{opacity:0.65;cursor:not-allowed;transform:none;}
+    .btn-spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.75s linear infinite;display:none;}
+    .btn-submit.loading .btn-spinner{display:block;}
+    .btn-submit.loading .btn-label{display:none;}
+
+    /* Toast */
+    #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-full);padding:12px 24px;font-size:0.9rem;font-weight:600;color:var(--color-text);box-shadow:0 8px 32px rgba(0,0,0,0.15);opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;z-index:600;white-space:nowrap;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    #toast.success{background:#F0FDF4;color:#166534;border-color:#BBF7D0;}
+    #toast.error{background:var(--color-danger-light);color:var(--color-danger);border-color:var(--color-danger-border);}
+    [data-theme="dark"] #toast.success{background:#052e16;color:#86efac;border-color:#166534;}
+
+    @media(max-width:640px){
+      .form-grid,.form-grid.cols-3{grid-template-columns:1fr;}
+      .col-full{grid-column:1;}
+      .page{padding-left:16px;padding-right:16px;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="dashboard.html" class="nav-logo" id="nav-logo">
+        <div class="nav-logo-icon"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+        Dorm<span>Link</span>
+      </a>
+      <div class="nav-right">
+        <a href="dashboard.html" class="btn-nav" id="nav-back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Dashboard
+        </a>
+        <button id="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="page-hd">
+      <div class="page-hd-label">Landlord Dashboard</div>
+      <h1 class="page-hd-title">Edit Listing</h1>
+      <p class="page-hd-sub">Update the details for this boarding house. Fields marked with <span style="color:var(--color-danger)">*</span> are required.</p>
+    </div>
+
+    <!-- Loader -->
+    <div id="page-loader">
+      <div class="spinner"></div>
+      <p class="loader-text">Loading listing data...</p>
+    </div>
+
+    <form id="listing-form" novalidate enctype="multipart/form-data">
+      <div id="form-content">
+        <!-- Property Details -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">🏠</div><div class="section-name">Property Details</div></div>
+          <div class="form-grid">
+            <div class="form-group col-full">
+              <label class="form-label" for="name">Boarding House Name <span class="req">*</span></label>
+              <input class="form-input" type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="address">Complete Address <span class="req">*</span></label>
+              <input class="form-input" type="text" id="address" name="address" required />
+            </div>
+            <div class="form-group col-full">
+              <label class="form-label" for="description">Description</label>
+              <textarea class="form-textarea" id="description" name="description"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">💰</div><div class="section-name">Pricing</div></div>
+          <div class="form-grid cols-3">
+            <div class="form-group">
+              <label class="form-label" for="monthly_rent">Monthly Rent <span class="req">*</span></label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">₱</span>
+                <input class="form-input with-prefix" type="number" id="monthly_rent" name="monthly_rent" min="0" step="0.01" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="security_deposit">Security Deposit</label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">₱</span>
+                <input class="form-input with-prefix" type="number" id="security_deposit" name="security_deposit" min="0" step="0.01" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="advance_payment">Advance Payment</label>
+              <div class="input-prefix-wrap">
+                <span class="input-prefix">₱</span>
+                <input class="form-input with-prefix" type="number" id="advance_payment" name="advance_payment" min="0" step="0.01" />
+              </div>
+            </div>
+          </div>
+          <div class="form-grid" style="margin-top:16px;">
+            <div class="form-group col-full">
+              <label class="form-label" for="additional_fees">Additional Fees</label>
+              <input class="form-input" type="text" id="additional_fees" name="additional_fees" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Utilities -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">⚡</div><div class="section-name">Utilities Included in Rent</div></div>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" name="water_included" value="true" /> <span class="checkbox-label">💧 Water</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="electricity_included" value="true" /> <span class="checkbox-label">⚡ Electricity</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="wifi_included" value="true" /> <span class="checkbox-label">📶 WiFi</span></label>
+          </div>
+        </div>
+
+        <!-- Room Information -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">🛏️</div><div class="section-name">Room Information</div></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="room_type">Room Type <span class="req">*</span></label>
+              <select class="form-select" id="room_type" name="room_type" required>
+                <option value="Solo Room">Solo Room</option>
+                <option value="Shared Room">Shared Room</option>
+                <option value="Bedspace">Bedspace</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="occupants_allowed">Max Occupants Allowed</label>
+              <input class="form-input" type="number" id="occupants_allowed" name="occupants_allowed" min="1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="room_size">Room Size</label>
+              <input class="form-input" type="text" id="room_size" name="room_size" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="available_rooms">Available Rooms</label>
+              <input class="form-input" type="number" id="available_rooms" name="available_rooms" min="0" />
+            </div>
+            <div class="form-group" id="beds-group">
+              <label class="form-label" for="available_beds">Available Beds</label>
+              <input class="form-input" type="number" id="available_beds" name="available_beds" min="0" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Amenities -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">✨</div><div class="section-name">Amenities</div></div>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" name="amenity_wifi" value="true" /><span class="checkbox-label">📶 WiFi</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_aircon" value="true" /><span class="checkbox-label">❄️ Aircon</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_electric_fan" value="true" /><span class="checkbox-label">🌀 Electric Fan</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_private_cr" value="true" /><span class="checkbox-label">🚿 Private CR</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_shared_cr" value="true" /><span class="checkbox-label">🚽 Shared CR</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_kitchen" value="true" /><span class="checkbox-label">🍳 Kitchen Access</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_laundry" value="true" /><span class="checkbox-label">👔 Laundry Area</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_parking" value="true" /><span class="checkbox-label">🚗 Parking</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_study_area" value="true" /><span class="checkbox-label">📚 Study Area</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_cctv" value="true" /><span class="checkbox-label">📷 CCTV</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_security_guard" value="true" /><span class="checkbox-label">💂 Security Guard</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="amenity_water_supply" value="true" /><span class="checkbox-label">💧 Water Supply</span></label>
+          </div>
+        </div>
+
+        <!-- House Rules -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">📋</div><div class="section-name">House Rules</div></div>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" name="rule_curfew" value="true" /><span class="checkbox-label">⏰ Curfew</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_visitors_allowed" value="true" /><span class="checkbox-label">👥 Visitors Allowed</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_cooking_allowed" value="true" /><span class="checkbox-label">🍳 Cooking Allowed</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_drinking_allowed" value="true" /><span class="checkbox-label">🍺 Drinking Allowed</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_smoking_allowed" value="true" /><span class="checkbox-label">🚬 Smoking Allowed</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_pets_allowed" value="true" /><span class="checkbox-label">🐾 Pets Allowed</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_male_only" value="true" /><span class="checkbox-label">♂️ Male Only</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_female_only" value="true" /><span class="checkbox-label">♀️ Female Only</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_students_only" value="true" /><span class="checkbox-label">🎓 Students Only</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="rule_working_professionals_only" value="true" /><span class="checkbox-label">💼 Professionals Only</span></label>
+          </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">📅</div><div class="section-name">Availability</div></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="availability_status">Status <span class="req">*</span></label>
+              <select class="form-select" id="availability_status" name="availability_status" required>
+                <option value="Available">Available</option>
+                <option value="Full">Full</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="date_available">Date Available</label>
+              <input class="form-input" type="date" id="date_available" name="date_available" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Owner Contact -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">👤</div><div class="section-name">Owner Contact</div></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="owner_name">Owner Name <span class="req">*</span></label>
+              <input class="form-input" type="text" id="owner_name" name="owner_name" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact_number">Contact Number <span class="req">*</span></label>
+              <input class="form-input" type="tel" id="contact_number" name="contact_number" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-section">
+          <div class="section-head"><div class="section-icon">🖼️</div><div class="section-name">Listing Image</div></div>
+          <div class="img-upload-area" id="upload-area" role="button" tabindex="0" aria-label="Upload listing image">
+            <div class="img-upload-icon">📷</div>
+            <div class="img-upload-text">Click to upload a new image</div>
+            <div class="img-upload-hint">Leave empty to keep the current image. JPG, PNG, WEBP — max 5MB</div>
+            <div class="img-preview" id="img-preview">
+              <span class="current-img-badge" id="img-badge">Current Image</span>
+              <img id="preview-img" src="" alt="Preview" />
+            </div>
+          </div>
+          <input type="file" id="image-input" name="image" accept="image/jpeg,image/jpg,image/png,image/webp" />
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <a href="dashboard.html" class="btn-cancel" id="cancel-btn">Cancel</a>
+          <button type="submit" class="btn-submit" id="submit-btn">
+            <div class="btn-spinner"></div>
+            <span class="btn-label">Save Changes</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function(){const t=localStorage.getItem('dormlink-theme')||'light';document.documentElement.setAttribute('data-theme',t);})();
+    document.getElementById('theme-toggle').addEventListener('click',()=>{const html=document.documentElement;const next=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',next);localStorage.setItem('dormlink-theme',next);});
+
+    // Auth guard
+    fetch('/api/auth/status').then(r=>r.json()).then(d=>{if(!d.loggedIn)window.location.href='login.html';}).catch(()=>window.location.href='login.html');
+
+    const params = new URLSearchParams(window.location.search);
+    const listingId = params.get('id');
+    if (!listingId) window.location.href = 'dashboard.html';
+
+    // Checkbox styling logic
+    function updateCheckboxUI(cb) {
+      cb.closest('.checkbox-item').classList.toggle('checked', cb.checked);
+    }
+    document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => updateCheckboxUI(cb));
+    });
+
+    // Beds field visibility
+    const roomTypeSelect = document.getElementById('room_type');
+    const bedsGroup = document.getElementById('beds-group');
+    roomTypeSelect.addEventListener('change', function() {
+      bedsGroup.style.display = this.value === 'Bedspace' ? '' : 'none';
+    });
+
+    // Image upload
+    const uploadArea = document.getElementById('upload-area');
+    const imageInput = document.getElementById('image-input');
+    const imgPreview = document.getElementById('img-preview');
+    const previewImg = document.getElementById('preview-img');
+    const imgBadge   = document.getElementById('img-badge');
+
+    uploadArea.addEventListener('click', () => imageInput.click());
+    uploadArea.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') imageInput.click(); });
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault(); uploadArea.classList.remove('drag');
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    imageInput.addEventListener('change', () => { if (imageInput.files[0]) handleFile(imageInput.files[0]); });
+
+    function handleFile(file) {
+      if (file.size > 5 * 1024 * 1024) { showToast('❌ Image too large. Max 5MB.', 'error'); return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewImg.src = e.target.result;
+        imgPreview.style.display = 'block';
+        imgBadge.textContent = 'New Image';
+        imgBadge.style.background = 'var(--color-primary)';
+        uploadArea.querySelector('.img-upload-text').textContent = file.name;
+      };
+      reader.readAsDataURL(file);
+      const dt = new DataTransfer(); dt.items.add(file); imageInput.files = dt.files;
+    }
+
+    // Toast
+    let toastTimer;
+    function showToast(msg, type = '') {
+      const el = document.getElementById('toast');
+      el.textContent = msg; el.className = 'show ' + type;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.className = ''; }, 4000);
+    }
+
+    // Load Data
+    async function loadListingData() {
+      try {
+        const resp = await fetch(`/api/listings/${listingId}`);
+        const data = await resp.json();
+
+        if (!data.success) {
+          showToast('❌ Listing not found.', 'error');
+          setTimeout(() => window.location.href = 'dashboard.html', 1500);
+          return;
+        }
+
+        const L = data.data;
+
+        // Populate fields
+        document.getElementById('name').value = L.name || '';
+        document.getElementById('address').value = L.address || '';
+        document.getElementById('description').value = L.description || '';
+        document.getElementById('monthly_rent').value = L.monthly_rent != null ? L.monthly_rent : '';
+        document.getElementById('security_deposit').value = L.security_deposit != null ? L.security_deposit : '';
+        document.getElementById('advance_payment').value = L.advance_payment != null ? L.advance_payment : '';
+        document.getElementById('additional_fees').value = L.additional_fees || '';
+
+        roomTypeSelect.value = L.room_type || 'Solo Room';
+        bedsGroup.style.display = roomTypeSelect.value === 'Bedspace' ? '' : 'none';
+
+        document.getElementById('occupants_allowed').value = L.occupants_allowed != null ? L.occupants_allowed : '';
+        document.getElementById('room_size').value = L.room_size || '';
+        document.getElementById('available_rooms').value = L.available_rooms != null ? L.available_rooms : '';
+        document.getElementById('available_beds').value = L.available_beds != null ? L.available_beds : '';
+
+        document.getElementById('availability_status').value = L.availability_status || 'Available';
+        if (L.date_available) {
+          // Format Date for input[type=date] (YYYY-MM-DD)
+          const d = new Date(L.date_available);
+          const y = d.getFullYear(); const m = String(d.getMonth()+1).padStart(2,'0'); const day = String(d.getDate()).padStart(2,'0');
+          document.getElementById('date_available').value = `${y}-${m}-${day}`;
+        }
+
+        document.getElementById('owner_name').value = L.owner_name || '';
+        document.getElementById('contact_number').value = L.contact_number || '';
+
+        // Checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+          if (L[cb.name] === true || L[cb.name] === 1) {
+            cb.checked = true;
+          } else {
+            cb.checked = false;
+          }
+          updateCheckboxUI(cb);
+        });
+
+        // Image
+        if (L.image_filename) {
+          previewImg.src = `/uploads/${L.image_filename}`;
+          imgPreview.style.display = 'block';
+        }
+
+        document.getElementById('page-loader').style.display = 'none';
+        document.getElementById('form-content').style.display = 'block';
+
+      } catch (err) {
+        showToast('❌ Error loading data.', 'error');
+      }
+    }
+
+    loadListingData();
+
+    // Form submit
+    document.getElementById('listing-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const rent = document.getElementById('monthly_rent').value;
+
+      if (!name || !address || !rent) {
+        showToast('❌ Please fill in all required fields.', 'error');
+        return;
+      }
+
+      btn.classList.add('loading'); btn.disabled = true;
+
+      try {
+        const formData = new FormData(document.getElementById('listing-form'));
+
+        const allCheckboxNames = [
+          'water_included','electricity_included','wifi_included',
+          'amenity_wifi','amenity_aircon','amenity_electric_fan','amenity_private_cr',
+          'amenity_shared_cr','amenity_kitchen','amenity_laundry','amenity_parking',
+          'amenity_study_area','amenity_cctv','amenity_security_guard','amenity_water_supply',
+          'rule_curfew','rule_visitors_allowed','rule_cooking_allowed','rule_drinking_allowed',
+          'rule_smoking_allowed','rule_pets_allowed','rule_male_only','rule_female_only',
+          'rule_students_only','rule_working_professionals_only'
+        ];
+        allCheckboxNames.forEach(name => {
+          if (!formData.has(name)) formData.set(name, 'false');
+        });
+
+        const resp = await fetch(`/api/listings/${listingId}`, { method: 'PUT', body: formData });
+        const data = await resp.json();
+
+        if (data.success) {
+          showToast('✅ Listing updated successfully!', 'success');
+          setTimeout(() => window.location.href = 'dashboard.html', 1200);
+        } else {
+          showToast('❌ ' + (data.message || 'Failed to update listing.'), 'error');
+        }
+      } catch (err) {
+        showToast('❌ Network error. Please try again.', 'error');
+      } finally {
+        btn.classList.remove('loading'); btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

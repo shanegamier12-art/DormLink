@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="DormLink — A modern boarding house marketplace connecting students and tenants with verified boarding houses." />
+  <title>DormLink — Find Your Perfect Boarding House</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ========================================================
+       DESIGN TOKENS — Light & Dark Mode
+    ======================================================== */
+    :root {
+      /* Light Mode */
+      --color-primary: #3B82F6;
+      --color-primary-dark: #2563EB;
+      --color-primary-light: #DBEAFE;
+      --color-accent: #60A5FA;
+      --color-bg: #F8FAFF;
+      --color-surface: #FFFFFF;
+      --color-surface-alt: #EFF6FF;
+      --color-border: #BFDBFE;
+      --color-text: #1E293B;
+      --color-text-muted: #64748B;
+      --color-text-light: #94A3B8;
+      --color-nav-bg: rgba(255, 255, 255, 0.92);
+      --color-hero-bg: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #BFDBFE 100%);
+      --color-card-shadow: 0 4px 24px rgba(59, 130, 246, 0.10);
+      --color-card-shadow-h: 0 8px 40px rgba(59, 130, 246, 0.18);
+      --color-footer-bg: #1E293B;
+      --color-footer-text: #94A3B8;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+
+      --nav-height: 72px;
+    }
+
+    [data-theme="dark"] {
+      --color-primary: #60A5FA;
+      --color-primary-dark: #3B82F6;
+      --color-primary-light: #1E3A5F;
+      --color-accent: #93C5FD;
+      --color-bg: #0F172A;
+      --color-surface: #1E293B;
+      --color-surface-alt: #162032;
+      --color-border: #2D4A6E;
+      --color-text: #F1F5F9;
+      --color-text-muted: #94A3B8;
+      --color-text-light: #64748B;
+      --color-nav-bg: rgba(15, 23, 42, 0.95);
+      --color-hero-bg: linear-gradient(135deg, #0F172A 0%, #162032 50%, #1E293B 100%);
+      --color-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      --color-card-shadow-h: 0 8px 40px rgba(0, 0, 0, 0.50);
+      --color-footer-bg: #0A1120;
+      --color-footer-text: #64748B;
+    }
+
+    /* ========================================================
+       RESET & BASE
+    ======================================================== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      transition: background-color var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* ========================================================
+       UTILITY
+    ======================================================== */
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 1.0625rem;
+      color: var(--color-text-muted);
+      max-width: 560px;
+      line-height: 1.75;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-primary);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.30);
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.40);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--color-primary);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 13px 28px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--color-primary);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--color-primary);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.30);
+    }
+
+    /* ========================================================
+       NAVBAR
+    ======================================================== */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--nav-height);
+      background: var(--color-nav-bg);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    #navbar.scrolled {
+      border-bottom-color: var(--color-border);
+      box-shadow: 0 2px 20px rgba(59, 130, 246, 0.08);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--nav-height);
+    }
+
+    /* Logo */
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-text);
+      text-decoration: none;
+      transition: opacity var(--transition);
+    }
+
+    .nav-logo:hover {
+      opacity: 0.85;
+    }
+
+    .nav-logo-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+    }
+
+    .nav-logo-text span {
+      color: var(--color-primary);
+    }
+
+    /* Nav Links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    /* Theme Toggle */
+    #theme-toggle {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--color-surface-alt);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+      margin-left: 8px;
+    }
+
+    #theme-toggle:hover {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      transform: rotate(20deg);
+    }
+
+    #theme-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .icon-sun {
+      display: none;
+    }
+
+    .icon-moon {
+      display: block;
+    }
+
+    [data-theme="dark"] .icon-sun {
+      display: block;
+    }
+
+    [data-theme="dark"] .icon-moon {
+      display: none;
+    }
+
+    /* Hamburger */
+    #hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition);
+    }
+
+    #hamburger:hover {
+      background: var(--color-surface-alt);
+    }
+
+    #hamburger span {
+      display: block;
+      width: 24px;
+      height: 2.5px;
+      background: var(--color-text);
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    #hamburger.open span:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+
+    #hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    #hamburger.open span:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    /* Mobile Menu */
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 16px 24px 24px;
+      z-index: 999;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    #mobile-menu.open {
+      display: block;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    #mobile-menu a {
+      display: block;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      padding: 14px 0;
+      border-bottom: 1px solid var(--color-border);
+      transition: color var(--transition);
+    }
+
+    #mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    #mobile-menu a:hover {
+      color: var(--color-primary);
+    }
+
+    /* ========================================================
+       HERO SECTION
+    ======================================================== */
+    #hero {
+      min-height: 100vh;
+      background: var(--color-hero-bg);
+      display: flex;
+      align-items: center;
+      padding-top: var(--nav-height);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Floating blobs */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      pointer-events: none;
+      animation: float 8s ease-in-out infinite alternate;
+    }
+
+    .hero-blob-1 {
+      width: 500px;
+      height: 500px;
+      background: var(--color-primary);
+      top: -100px;
+      right: -100px;
+    }
+
+    .hero-blob-2 {
+      width: 350px;
+      height: 350px;
+      background: var(--color-accent);
+      bottom: -80px;
+      left: -60px;
+      animation-delay: -4s;
+    }
+
+    @keyframes float {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(20px, -30px) scale(1.05);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 120px 0 80px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 24px;
+      box-shadow: var(--color-card-shadow);
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      background: #22C55E;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.6;
+        transform: scale(1.3);
+      }
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--color-text);
+      margin-bottom: 20px;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.125rem;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat-num {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    /* Hero Visual */
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card-main {
+      background: var(--color-surface);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+      border: 1px solid var(--color-border);
+      animation: cardFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes cardFloat {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .hero-card-img {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card-img-icon {
+      font-size: 4rem;
+      opacity: 0.6;
+    }
+
+    .hero-card-img-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .hero-card-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #22C55E;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .hero-card-name {
+      font-family: var(--font-heading);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 6px;
+    }
+
+    .hero-card-addr {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .hero-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-card-price {
+      font-family: var(--font-heading);
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: var(--color-primary);
+    }
+
+    .hero-card-price span {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--color-text-muted);
+    }
+
+    .hero-card-type {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+    }
+
+    /* Floating mini cards */
+    .hero-float-card {
+      position: absolute;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      box-shadow: var(--color-card-shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text);
+      white-space: nowrap;
+    }
+
+    .hero-float-card-1 {
+      top: -20px;
+      left: -40px;
+      animation: floatCard1 5s ease-in-out infinite;
+    }
+
+    .hero-float-card-2 {
+      bottom: -20px;
+      right: -30px;
+      animation: floatCard2 5s ease-in-out infinite;
+    }
+
+    @keyframes floatCard1 {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes floatCard2 {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    .float-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* ========================================================
+       ABOUT SECTION
+    ======================================================== */
+    #about {
+      padding: 100px 0;
+      background: var(--color-surface);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .about-feature-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .about-feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--color-card-shadow-h);
+    }
+
+    .about-feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--color-primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 1.375rem;
+    }
+
+    .about-feature-name {
+      font-family: var(--font-heading);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 6px;
+    }
+
+    .about-feature-desc {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    .about-text .section-desc {
+      max-width: 100%;
+    }
+
+    .about-list {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .about-list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9375rem;
+      color: var(--color-text-muted);
+    }
+
+    .about-list-check {
+      width: 22px;
+      height: 22px;
+      background: var(--color-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .about-list-check svg {
+      width: 12px;
+      height: 12px;
+      fill: #fff;
+    }
+
+    /* ========================================================
+       HOW IT WORKS SECTION
+    ======================================================== */
+    #how-it-works {
+      padding: 100px 0;
+      background: var(--color-bg);
+    }
+
+    .hiw-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .hiw-header .section-desc {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hiw-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    /* Connecting line */
+    .hiw-grid::before {
+      content: '';
+      position: absolute;
+      top: 48px;
+      left: calc(16.66% + 16px);
+      right: calc(16.66% + 16px);
+      height: 2px;
+      background: linear-gradient(to right, var(--color-primary-light), var(--color-primary), var(--color-primary-light));
+      z-index: 0;
+    }
+
+    .hiw-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 36px 28px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .hiw-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--color-card-shadow-h);
+    }
+
+    .hiw-step {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hiw-card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .hiw-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 10px;
+    }
+
+    .hiw-card-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+
+    /* ========================================================
+       FEATURES BANNER
+    ======================================================== */
+    #features-banner {
+      padding: 72px 0;
+      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+      position: relative;
+      overflow: hidden;
+    }
+
+    #features-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 10% 50%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .banner-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .banner-text h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .banner-text p {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--color-primary-dark);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      border: none;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    }
+
+    /* ========================================================
+       CONTACT SECTION
+    ======================================================== */
+    #contact {
+      padding: 100px 0;
+      background: var(--color-surface);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-items {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .contact-item-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--color-primary-light);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .contact-item-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .contact-item-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .contact-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      box-shadow: var(--color-card-shadow);
+    }
+
+    .contact-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 8px;
+    }
+
+    .contact-card p {
+      font-size: 0.9375rem;
+      color: var(--color-text-muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .cta-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cta-btns .btn-primary,
+    .cta-btns .btn-outline {
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* ========================================================
+       FOOTER
+    ======================================================== */
+    #footer {
+      background: var(--color-footer-bg);
+      padding: 56px 0 32px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-logo-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .footer-tagline {
+      font-size: 0.9rem;
+      color: var(--color-footer-text);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-heading);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .footer-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.9rem;
+      color: var(--color-footer-text);
+      transition: color var(--transition);
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--color-accent);
+    }
+
+    .footer-divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 28px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: 0.875rem;
+      color: var(--color-footer-text);
+    }
+
+    .footer-copy strong {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ========================================================
+       SCROLL TO TOP
+    ======================================================== */
+    #scroll-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 46px;
+      height: 46px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.40);
+      transition: opacity var(--transition), transform var(--transition), background var(--transition);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 900;
+    }
+
+    #scroll-top.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #scroll-top:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-3px);
+    }
+
+    #scroll-top svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ========================================================
+       RESPONSIVE
+    ======================================================== */
+    @media (max-width: 1024px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      #theme-toggle {
+        margin-left: 0;
+      }
+
+      #hamburger {
+        display: flex;
+      }
+
+      .hiw-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hiw-grid::before {
+        display: none;
+      }
+
+      .about-visual {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .about-feature-card:nth-child(2),
+      .about-feature-card:nth-child(4) {
+        margin-top: 0;
+      }
+
+      .banner-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions .btn-primary,
+      .hero-actions .btn-outline {
+        justify-content: center;
+      }
+
+      .about-visual {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ========================================================
+       FADE-IN ANIMATION
+    ======================================================== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-inner">
+
+        <!-- Logo -->
+        <a href="#hero" class="nav-logo" id="nav-logo">
+          <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+            </svg>
+          </div>
+          <div class="nav-logo-text">Dorm<span>Link</span></div>
+        </a>
+
+        <!-- Desktop Nav Links -->
+        <div class="nav-links" id="nav-links">
+          <a href="#about" id="nav-about">About</a>
+          <a href="#how-it-works" id="nav-hiw">How It Works</a>
+          <a href="#contact" id="nav-contact">Contact Us</a>
+        </div>
+
+        <!-- Right Side Controls -->
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button id="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+            <!-- Sun (dark mode) -->
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            <!-- Moon (light mode) -->
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
+
+          <button id="hamburger" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" role="dialog" aria-label="Mobile navigation">
+    <a href="#about" id="mob-about">About</a>
+    <a href="#how-it-works" id="mob-hiw">How It Works</a>
+    <a href="#contact" id="mob-contact">Contact Us</a>
+  </div>
+
+  <!-- ============================================================
+       HERO SECTION
+  ============================================================ -->
+  <section id="hero" aria-label="Hero">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+
+    <div class="container">
+      <div class="hero-content">
+
+        <!-- Left: Text -->
+        <div class="hero-text">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            Your Trusted Boarding House Marketplace
+          </div>
+
+          <h1 class="hero-title">
+            Find Your<br />
+            <span class="highlight">Perfect Boarding</span><br />
+            House
+          </h1>
+
+          <p class="hero-desc">
+            A modern marketplace connecting students and tenants with verified boarding houses through a secure and
+            professional platform.
+          </p>
+
+          <div class="hero-actions">
+            <a href="listings.html" class="btn-primary" id="cta-tenant">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              Browse Listings
+            </a>
+            <a href="login.html" class="btn-outline" id="cta-landlord">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Landlord Login
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-num">100%</div>
+              <div class="hero-stat-label">Verified Listings</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">Free</div>
+              <div class="hero-stat-label">To Browse</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">24/7</div>
+              <div class="hero-stat-label">Available Online</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT SECTION
+  ============================================================ -->
+  <section id="about" aria-label="About DormLink">
+    <div class="container">
+      <div class="about-grid">
+
+        <!-- Visual -->
+        <div class="about-visual fade-in" aria-hidden="true">
+          <div class="about-feature-card">
+            <div class="about-feature-icon">🔍</div>
+            <div class="about-feature-name">Smart Search</div>
+            <div class="about-feature-desc">Filter by room type, price range, amenities, and availability instantly.
+            </div>
+          </div>
+          <div class="about-feature-card">
+            <div class="about-feature-icon">🏡</div>
+            <div class="about-feature-name">Detailed Listings</div>
+            <div class="about-feature-desc">Full property info, photos, house rules, and direct owner contacts.</div>
+          </div>
+          <div class="about-feature-card">
+            <div class="about-feature-icon">💰</div>
+            <div class="about-feature-name">Transparent Pricing</div>
+            <div class="about-feature-desc">See rent, deposit, advance payment, and all included utilities upfront.
+            </div>
+          </div>
+          <div class="about-feature-card">
+            <div class="about-feature-icon">📱</div>
+            <div class="about-feature-name">Mobile Friendly</div>
+            <div class="about-feature-desc">Browse listings from any device — desktop, tablet, or smartphone.</div>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="about-text fade-in">
+          <span class="section-label">About DormLink</span>
+          <h2 class="section-title">A Smarter Way to Find a Boarding House</h2>
+          <p class="section-desc">
+            DormLink simplifies the process of finding the right boarding house. No middlemen, no confusing listings —
+            just clear, honest information from verified landlords directly to you.
+          </p>
+
+          <ul class="about-list">
+            <li class="about-list-item">
+              <div class="about-list-check">
+                <svg viewBox="0 0 12 12">
+                  <path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                    fill="none" />
+                </svg>
+              </div>
+              Browse listings without signing up — no account needed
+            </li>
+            <li class="about-list-item">
+              <div class="about-list-check">
+                <svg viewBox="0 0 12 12">
+                  <path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                    fill="none" />
+                </svg>
+              </div>
+              See all amenities, house rules, and availability at a glance
+            </li>
+            <li class="about-list-item">
+              <div class="about-list-check">
+                <svg viewBox="0 0 12 12">
+                  <path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                    fill="none" />
+                </svg>
+              </div>
+              Contact the landlord directly using the listed number
+            </li>
+            <li class="about-list-item">
+              <div class="about-list-check">
+                <svg viewBox="0 0 12 12">
+                  <path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                    fill="none" />
+                </svg>
+              </div>
+              Listings always up-to-date — managed directly by the owner
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS SECTION
+  ============================================================ -->
+  <section id="how-it-works" aria-label="How DormLink Works">
+    <div class="container">
+      <div class="hiw-header fade-in">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title">Find a Boarding House in 3 Simple Steps</h2>
+        <p class="section-desc">
+          DormLink makes the entire process fast, straightforward, and stress-free.
+        </p>
+      </div>
+
+      <div class="hiw-grid">
+
+        <div class="hiw-card fade-in">
+          <div class="hiw-step">1</div>
+          <div class="hiw-card-icon">🔍</div>
+          <div class="hiw-card-title">Browse & Search</div>
+          <p class="hiw-card-desc">
+            Visit the listings page and use the search bar and filters to find boarding houses that match your needs —
+            no account required.
+          </p>
+        </div>
+
+        <div class="hiw-card fade-in">
+          <div class="hiw-step">2</div>
+          <div class="hiw-card-icon">📋</div>
+          <div class="hiw-card-title">View Full Details</div>
+          <p class="hiw-card-desc">
+            Click on any listing to see the complete property information — amenities, rules, pricing, photos, and owner
+            contact details.
+          </p>
+        </div>
+
+        <div class="hiw-card fade-in">
+          <div class="hiw-step">3</div>
+          <div class="hiw-card-icon">📞</div>
+          <div class="hiw-card-title">Contact the Landlord</div>
+          <p class="hiw-card-desc">
+            Use the displayed contact number to reach the landlord directly and arrange your viewing or move-in. Simple,
+            no middlemen.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES BANNER / CTA
+  ============================================================ -->
+  <section id="features-banner" aria-label="Call to action">
+    <div class="container">
+      <div class="banner-inner">
+        <div class="banner-text">
+          <h2>Ready to Find Your New Home?</h2>
+          <p>Browse available boarding houses right now — completely free.</p>
+        </div>
+        <a href="listings.html" class="btn-white" id="banner-cta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          View All Listings
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT SECTION
+  ============================================================ -->
+  <section id="contact" aria-label="Contact Information">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Info -->
+        <div class="contact-info fade-in">
+          <span class="section-label">Contact Us</span>
+          <h2 class="section-title">Get in Touch</h2>
+          <p class="section-desc">
+            Have questions about a listing or need help? Reach out to us directly.
+          </p>
+
+          <div class="contact-items">
+            <div class="contact-item">
+              <div class="contact-item-icon">📍</div>
+              <div class="contact-item-body">
+                <div class="contact-item-label">Location</div>
+                <div class="contact-item-value">Lopez, Quezon</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">📞</div>
+              <div class="contact-item-body">
+                <div class="contact-item-label">Phone</div>
+                <div class="contact-item-value">angelandshena@gmail.com</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">🕐</div>
+              <div class="contact-item-body">
+                <div class="contact-item-label">Availability</div>
+                <div class="contact-item-value">24/7 Online — Browse Anytime</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Card -->
+        <div class="contact-card fade-in">
+          <h3>Start Browsing Today</h3>
+          <p>
+            No registration required. Simply browse the listings, find your preferred boarding house, and contact the
+            landlord directly. Are you a landlord? Log in to manage your listings.
+          </p>
+          <div class="cta-btns">
+            <a href="listings.html" class="btn-primary" id="contact-cta-tenant">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              Continue as Tenant
+            </a>
+            <a href="login.html" class="btn-outline" id="contact-cta-landlord">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Login as Landlord
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer id="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+            </div>
+            DormLink
+          </div>
+          <p class="footer-tagline">
+            A simple and professional boarding house marketplace connecting students and tenants with verified listings.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- For Users -->
+        <div class="footer-col">
+          <h4>For Users</h4>
+          <ul>
+            <li><a href="listings.html">Browse Listings</a></li>
+            <li><a href="login.html">Landlord Login</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <hr class="footer-divider" />
+
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          &copy; 2026 <strong>DormLink</strong>. All rights reserved. Built by Gamier &amp; Andrade.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top -->
+  <button id="scroll-top" aria-label="Scroll to top" title="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+      stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15" />
+    </svg>
+  </button>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // ── Theme — apply BEFORE render to prevent flash ──────────────
+    (function () {
+      const saved = localStorage.getItem('dormlink-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
+
+    // ── Theme Toggle ──────────────────────────────────────────────
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('dormlink-theme', next);
+    });
+
+    // ── Navbar Scroll Effect ───────────────────────────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // ── Hamburger Menu ─────────────────────────────────────────────
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', open);
+    });
+
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // ── Smooth Scroll for nav links ────────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ── Scroll to Top Button ───────────────────────────────────────
+    const scrollTopBtn = document.getElementById('scroll-top');
+    window.addEventListener('scroll', () => {
+      scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Fade-in on Scroll ──────────────────────────────────────────
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // Stagger child elements within a parent
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    fadeEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+
+</html>

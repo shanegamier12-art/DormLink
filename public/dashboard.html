@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Landlord dashboard — manage your boarding house listings on DormLink." />
+  <title>My Dashboard — DormLink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    :root {
+      --color-primary: #3B82F6;
+      --color-primary-dark: #2563EB;
+      --color-primary-light: #DBEAFE;
+      --color-accent: #60A5FA;
+      --color-bg: #F8FAFF;
+      --color-surface: #FFFFFF;
+      --color-surface-alt: #EFF6FF;
+      --color-border: #BFDBFE;
+      --color-text: #1E293B;
+      --color-text-muted: #64748B;
+      --color-success: #22C55E;
+      --color-danger: #EF4444;
+      --color-danger-light: #FEF2F2;
+      --color-danger-border: #FECACA;
+      --color-nav-bg: rgba(255, 255, 255, 0.92);
+      --color-card-shadow: 0 4px 24px rgba(59, 130, 246, 0.10);
+      --color-card-shadow-h: 0 8px 40px rgba(59, 130, 246, 0.18);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --nav-height: 72px;
+    }
+
+    [data-theme="dark"] {
+      --color-primary: #60A5FA;
+      --color-primary-dark: #3B82F6;
+      --color-primary-light: #1E3A5F;
+      --color-accent: #93C5FD;
+      --color-bg: #0F172A;
+      --color-surface: #1E293B;
+      --color-surface-alt: #162032;
+      --color-border: #2D4A6E;
+      --color-text: #F1F5F9;
+      --color-text-muted: #94A3B8;
+      --color-nav-bg: rgba(15, 23, 42, 0.95);
+      --color-card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      --color-card-shadow-h: 0 8px 40px rgba(0, 0, 0, 0.50);
+      --color-danger-light: #2d1515;
+      --color-danger-border: #7f1d1d;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* Navbar */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: var(--color-nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-border);
+      box-shadow: 0 2px 16px rgba(59, 130, 246, 0.06);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--nav-height);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: var(--color-text);
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #fff;
+    }
+
+    .nav-logo span {
+      color: var(--color-primary);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      transition: all var(--transition);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+
+    .btn-nav:hover {
+      background: var(--color-surface-alt);
+      color: var(--color-text);
+    }
+
+    .btn-nav.danger:hover {
+      background: var(--color-danger-light);
+      color: var(--color-danger);
+    }
+
+    .btn-nav svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--color-surface-alt);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+
+    #theme-toggle:hover {
+      color: var(--color-primary);
+    }
+
+    #theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .icon-sun {
+      display: none;
+    }
+
+    .icon-moon {
+      display: block;
+    }
+
+    [data-theme="dark"] .icon-sun {
+      display: block;
+    }
+
+    [data-theme="dark"] .icon-moon {
+      display: none;
+    }
+
+    /* Page */
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: calc(var(--nav-height) + 36px) 24px 60px;
+    }
+
+    /* Dashboard Header */
+    .dash-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .dash-title-wrap {}
+
+    .dash-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 6px;
+    }
+
+    .dash-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--color-text);
+    }
+
+    .dash-sub {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-primary);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: var(--radius-full);
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.28);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-add:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.38);
+    }
+
+    .btn-add svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    /* Loader */
+    #loader {
+      padding: 80px;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 16px;
+      border: 3px solid var(--color-border);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loader-text {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Empty State */
+    #empty-state {
+      display: none;
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.4;
+    }
+
+    .empty-title {
+      font-family: var(--font-heading);
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 10px;
+    }
+
+    .empty-desc {
+      font-size: 0.9375rem;
+      color: var(--color-text-muted);
+      margin-bottom: 28px;
+    }
+
+    /* Listings Grid */
+    #listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 24px;
+    }
+
+    /* Dashboard Card */
+    .dash-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .dash-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--color-card-shadow-h);
+    }
+
+    .dc-img {
+      width: 100%;
+      height: 170px;
+      background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dc-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .dash-card:hover .dc-img img {
+      transform: scale(1.04);
+    }
+
+    .dc-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.75rem;
+      opacity: 0.45;
+    }
+
+    .dc-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .badge-available {
+      background: var(--color-success);
+      color: #fff;
+    }
+
+    .badge-full {
+      background: var(--color-danger);
+      color: #fff;
+    }
+
+    .dc-body {
+      padding: 18px 20px;
+    }
+
+    .dc-name {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dc-address {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      margin-bottom: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dc-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dc-price {
+      font-family: var(--font-heading);
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--color-primary);
+    }
+
+    .dc-type {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .dc-actions {
+      display: flex;
+      gap: 8px;
+      padding: 12px 20px 16px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .dc-btn {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .dc-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .btn-edit {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    .btn-edit:hover {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .btn-del {
+      background: var(--color-danger-light);
+      color: var(--color-danger);
+      border: 1px solid var(--color-danger-border);
+    }
+
+    .btn-del:hover {
+      background: var(--color-danger);
+      color: #fff;
+    }
+
+    .btn-view {
+      background: var(--color-surface-alt);
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-view:hover {
+      background: var(--color-border);
+      color: var(--color-text);
+    }
+
+    /* Delete Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0, 0, 0, 0.50);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.20);
+      transform: scale(0.95);
+      transition: transform var(--transition);
+    }
+
+    .modal-overlay.open .modal {
+      transform: scale(1);
+    }
+
+    .modal-icon {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .modal-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      text-align: center;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-cancel {
+      flex: 1;
+      padding: 12px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--color-border);
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .modal-cancel:hover {
+      background: var(--color-surface-alt);
+      color: var(--color-text);
+    }
+
+    .modal-confirm {
+      flex: 1;
+      padding: 12px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: var(--color-danger);
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .modal-confirm:hover {
+      background: #DC2626;
+    }
+
+    .modal-confirm:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 12px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 600;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #toast.success {
+      background: #F0FDF4;
+      color: #166534;
+      border-color: #BBF7D0;
+    }
+
+    #toast.error {
+      background: var(--color-danger-light);
+      color: var(--color-danger);
+      border-color: var(--color-danger-border);
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      #listings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="nav-logo">
+        <div class="nav-logo-icon"><svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+          </svg></div>
+        Dorm<span>Link</span>
+      </a>
+      <div class="nav-right">
+        <button id="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+        <button class="btn-nav danger" id="logout-btn">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page -->
+  <div class="page">
+
+    <!-- Header -->
+    <div class="dash-header">
+      <div class="dash-title-wrap">
+        <div class="dash-label">Landlord Dashboard</div>
+        <h1 class="dash-title">My Listings</h1>
+        <p class="dash-sub" id="dash-sub">Loading...</p>
+      </div>
+      <a href="create-listing.html" class="btn-add" id="add-listing-btn">
+        <svg viewBox="0 0 24 24">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        Add New Listing
+      </a>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader">
+      <div class="spinner"></div>
+      <p class="loader-text">Loading your listings...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state">
+      <div class="empty-icon">🏠</div>
+      <div class="empty-title">You haven't added any listings yet.</div>
+      <p class="empty-desc">Create your first listing to get started. Tenants will be able to browse it right away.</p>
+      <a href="create-listing.html" class="btn-add" style="display:inline-flex;" id="empty-add-btn">
+        <svg viewBox="0 0 24 24">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        Add First Listing
+      </a>
+    </div>
+
+    <!-- Grid -->
+    <div id="listings-grid"></div>
+
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal-overlay" id="delete-modal" role="dialog" aria-modal="true" aria-label="Confirm delete">
+    <div class="modal">
+      <div class="modal-icon">🗑️</div>
+      <div class="modal-title">Delete Listing?</div>
+      <p class="modal-desc">This will permanently remove this boarding house listing and its image. This action cannot
+        be undone.</p>
+      <div class="modal-actions">
+        <button class="modal-cancel" id="modal-cancel">Cancel</button>
+        <button class="modal-confirm" id="modal-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      const t = localStorage.getItem('dormlink-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('dormlink-theme', next);
+    });
+
+    // Auth guard — redirect if not logged in
+    async function checkAuth() {
+      try {
+        const resp = await fetch('/api/auth/status');
+        const data = await resp.json();
+        if (!data.loggedIn) window.location.href = 'login.html';
+      } catch { window.location.href = 'login.html'; }
+    }
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } finally {
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Toast
+    let toastTimer;
+    function showToast(msg, type = '') {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'show ' + type;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.className = ''; }, 3000);
+    }
+
+    // Delete state
+    let deleteId = null;
+    const modal = document.getElementById('delete-modal');
+    document.getElementById('modal-cancel').addEventListener('click', () => {
+      modal.classList.remove('open'); deleteId = null;
+    });
+    modal.addEventListener('click', (e) => { if (e.target === modal) { modal.classList.remove('open'); deleteId = null; } });
+
+    document.getElementById('modal-confirm').addEventListener('click', async () => {
+      if (!deleteId) return;
+      const btn = document.getElementById('modal-confirm');
+      btn.disabled = true; btn.textContent = 'Deleting...';
+      try {
+        const resp = await fetch(`/api/listings/${deleteId}`, { method: 'DELETE' });
+        const data = await resp.json();
+        if (data.success) {
+          modal.classList.remove('open');
+          showToast('✅ Listing deleted.', 'success');
+          loadListings();
+        } else {
+          showToast('❌ ' + data.message, 'error');
+        }
+      } catch {
+        showToast('❌ Network error.', 'error');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Delete'; deleteId = null;
+      }
+    });
+
+    function esc(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    async function loadListings() {
+      const loader = document.getElementById('loader');
+      const grid = document.getElementById('listings-grid');
+      const empty = document.getElementById('empty-state');
+      const sub = document.getElementById('dash-sub');
+
+      loader.style.display = 'block';
+      grid.innerHTML = '';
+      empty.style.display = 'none';
+
+      try {
+        const resp = await fetch('/api/listings');
+        const data = await resp.json();
+        loader.style.display = 'none';
+
+        if (!data.success || data.data.length === 0) {
+          empty.style.display = 'block';
+          sub.textContent = '0 listings';
+          return;
+        }
+
+        const listings = data.data;
+        sub.textContent = `${listings.length} listing${listings.length !== 1 ? 's' : ''} total`;
+
+        listings.forEach(L => {
+          const isAvail = L.availability_status === 'Available';
+          const card = document.createElement('div');
+          card.className = 'dash-card';
+          card.innerHTML = `
+            <div class="dc-img">
+              ${L.image_filename
+              ? `<img src="/uploads/${esc(L.image_filename)}" alt="${esc(L.name)}" loading="lazy" />`
+              : `<div class="dc-img-placeholder">🏠</div>`
+            }
+              <span class="dc-badge ${isAvail ? 'badge-available' : 'badge-full'}">${L.availability_status}</span>
+            </div>
+            <div class="dc-body">
+              <div class="dc-name" title="${esc(L.name)}">${esc(L.name)}</div>
+              <div class="dc-address" title="${esc(L.address)}">${esc(L.address)}</div>
+              <div class="dc-row">
+                <div class="dc-price">₱${Number(L.monthly_rent).toLocaleString()}<span style="font-size:0.75rem;font-weight:400;color:var(--color-text-muted);">/mo</span></div>
+                <span class="dc-type">${esc(L.room_type)}</span>
+              </div>
+            </div>
+            <div class="dc-actions">
+              <button class="dc-btn btn-view" data-id="${L.id}">
+                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                View
+              </button>
+              <button class="dc-btn btn-edit" data-id="${L.id}">
+                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit
+              </button>
+              <button class="dc-btn btn-del" data-id="${L.id}" data-name="${esc(L.name)}">
+                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                Delete
+              </button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        // Bind buttons
+        grid.querySelectorAll('.btn-view').forEach(btn => {
+          btn.addEventListener('click', () => window.location.href = `details.html?id=${btn.dataset.id}`);
+        });
+        grid.querySelectorAll('.btn-edit').forEach(btn => {
+          btn.addEventListener('click', () => window.location.href = `edit-listing.html?id=${btn.dataset.id}`);
+        });
+        grid.querySelectorAll('.btn-del').forEach(btn => {
+          btn.addEventListener('click', () => {
+            deleteId = btn.dataset.id;
+            modal.classList.add('open');
+          });
+        });
+
+      } catch {
+        loader.style.display = 'none';
+        sub.textContent = 'Failed to load';
+        showToast('❌ Failed to load listings.', 'error');
+      }
+    }
+
+    checkAuth().then(() => loadListings());
+  </script>
+</body>
+
+</html>
