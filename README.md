@@ -106,25 +106,5 @@ Used for storing and managing:
 - Availability
 - Contact information
 
----
 
-## Security and Middleware
 
-- **bcryptjs**
-  - Used for password hashing and secure authentication.
-
-- **express-session**
-  - Used for managing login sessions.
-
-- **multer**
-  - Used for handling boarding house image uploads.
-
-- **helmet**
-  - Used for improving application security.
-
-- **dotenv**
-  - Used for managing environment variables.
-
----
-
-# 📂 Project Structure
